@@ -42,7 +42,7 @@ val_dirs = remote_dirs[int(len(remote_dirs)*0.9):] if not debug else remote_dirs
 train_files = []
 val_files = []
 test_files = []
-print train_dirs
+print(train_dirs)
 MAX = 1
 for ff in train_dirs:
     train_files = train_files + [ff + "/" + f for f in os.listdir(ff) if "Step" in f][:MAX]
@@ -218,29 +218,29 @@ loss, acc = model.evaluate(X_test_hit, y_test, batch_size=2048)
 test_pred = model.predict(X_test_hit)
 test_roc = roc_auc_score(y_test, test_pred)
 test_acc,t_test = max_binary_accuracy(y_test,test_pred,n=1000)
-print('Test loss / test AUC       = {:.4f} / {:.4f} '.format(loss,test_roc))
-print('Test acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,test_acc,t_test))
+print(('Test loss / test AUC       = {:.4f} / {:.4f} '.format(loss,test_roc)))
+print(('Test acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,test_acc,t_test)))
 
 loss, acc = model.evaluate(X_train_hit, y_train, batch_size=1024)
 test_pred = model.predict(X_train_hit)
 train_roc = roc_auc_score(y_train, test_pred)
 train_acc,t_train = max_binary_accuracy(y_train,test_pred,n=100)
-print('Train loss / train AUC       = {:.4f} / {:.4f} '.format(loss,train_roc))
-print('Train acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,train_acc,t_train))
+print(('Train loss / train AUC       = {:.4f} / {:.4f} '.format(loss,train_roc)))
+print(('Train acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,train_acc,t_train)))
 
 
-print 'X Train Shape: ', X_train_hit.shape
-print 'X Val Shape: ', X_val_hit.shape
-print 'X Test Shape: ', X_test_hit.shape
+print(('X Train Shape: ', X_train_hit.shape))
+print(('X Val Shape: ', X_val_hit.shape))
+print(('X Test Shape: ', X_test_hit.shape))
 
 
 data_linear_train = X_train_hit.reshape(X_train_hit.shape[0],-1)
 data_linear_val   = X_val_hit.reshape(X_val_hit.shape[0],-1)
 data_linear_test  = X_test_hit.reshape(X_test_hit.shape[0],-1)
 
-print 'Data Linear Train Shape: ', data_linear_train.shape
-print 'Data Linear Val Shape: ', data_linear_val.shape
-print 'Data Linear Test Shape: ', data_linear_test.shape
+print(('Data Linear Train Shape: ', data_linear_train.shape))
+print(('Data Linear Val Shape: ', data_linear_val.shape))
+print(('Data Linear Test Shape: ', data_linear_test.shape))
 
 '''
 data_linear[0][0:256].reshape(16,16)
@@ -276,7 +276,7 @@ label_train_df.to_hdf("pixel_only_data_train.h5","labels",append=False)
 label_val_df.to_hdf("pixel_only_data_val.h5","labels",append=False)
 label_test_df.to_hdf("pixel_only_data_test.h5","labels",append=False)
 
-print 'Data files created succesfully!'
+print('Data files created succesfully!')
 
 def freeze_session(session, keep_var_names=None, output_names=None, clear_devices=True):
     from tensorflow.python.framework.graph_util import convert_variables_to_constants
@@ -301,7 +301,7 @@ frozen_graph = freeze_session(K.get_session(),
 tf.train.write_graph(frozen_graph, "./", "pixel_only_final.pb", as_text=False)
 
 
-print 'Loading the model for inference...'
+print('Loading the model for inference...')
 model = pixel_only_model(n_channels=X_train_hit.shape[1])
 model.load_weights("pixel_only_final.h5")
 test_df = pd.read_hdf("pixel_only_data_test.h5", "data").values.reshape(-1,20,16,16)
@@ -317,8 +317,8 @@ loss, acc = model.evaluate(X_test_hit, y_test, batch_size=2048)
 test_pred = model.predict(X_test_hit)
 test_roc = roc_auc_score(y_test, test_pred)
 test_acc,t_test = max_binary_accuracy(y_test,test_pred,n=1000)
-print('Test loss / test AUC       = {:.4f} / {:.4f} '.format(loss,test_roc))
-print('Test acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,test_acc,t_test))
+print(('Test loss / test AUC       = {:.4f} / {:.4f} '.format(loss,test_roc)))
+print(('Test acc /  acc max (@t)   = {:.4f} / {:.4f} ({:.3f})'.format(acc,test_acc,t_test)))
 
 
-print '***** Model working correctly! *****'
+print('***** Model working correctly! *****')

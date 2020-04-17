@@ -44,8 +44,8 @@ if __name__ == '__main__':
 
     inputData = pd.read_hdf("pixel_only_data_test.h5", "data").values.reshape(-1,20,16,16)
     ncols = 20 * 16 * 16
-    print "Number of columns: ", ncols    
-    print "inputData shape: ", inputData.shape
+    print("Number of columns: ", ncols)    
+    print("inputData shape: ", inputData.shape)
     labelOutput = pd.read_hdf("pixel_only_data_test.h5", "labels").values.reshape(-1,2)
     
 
@@ -78,9 +78,9 @@ if __name__ == '__main__':
         start = time.time()
         for i in range(batchSize):
             y_out = sess.run(y, feed_dict={x: inputData[i:i+1,:,:,:]})
-            print 'Expected output: ', labelOutput[i:i+1,:]
-            print 'Network output: ', y_out
-            print '\n'
+            print('Expected output: ', labelOutput[i:i+1,:])
+            print('Network output: ', y_out)
+            print('\n')
 
         elapsed_time = time.time() - start
-    print "Elapsed time to make inference: ", elapsed_time 
+    print("Elapsed time to make inference: ", elapsed_time) 

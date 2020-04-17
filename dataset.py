@@ -137,7 +137,7 @@ class Dataset:
     def __init__(self, fnames,balance=False,pdgIds=main_pdgs):
         self.data = pd.DataFrame(data=[], columns=dataLab)
         for i,f in enumerate(fnames):
-            print("Loading file " + str(i+1) + "/" + str(len(fnames)) + " : " + f)
+            print(("Loading file " + str(i+1) + "/" + str(len(fnames)) + " : " + f))
             df = 0
             if not f.lower().endswith("h5"):
                 continue
@@ -499,7 +499,7 @@ class Dataset:
         for p in main_pdgs:
             labels[(self.data[pdg_lab].abs().as_matrix()==p) & (self.data[target_lab].as_matrix()!=-1.0)] = main_pdgs.index(p) + 2
 
-        print set(labels)
+        print(set(labels))
         return labels
 
     def get_data(self, normalize=True, angular_correction=True, flipped_channels=True,b_w_correction=False):
@@ -532,14 +532,14 @@ class Dataset:
         n_neg = data_neg.shape[0]
 
 	if n_pos==0:
-		print("Number of negatives: " + str(n_neg))
-                print("Number of positive: " + str(n_pos))
+		print(("Number of negatives: " + str(n_neg)))
+                print(("Number of positive: " + str(n_pos)))
  		print("Returning")
 		return self
         if verbose:
-            print("Number of negatives: " + str(n_neg))
-            print("Number of positive: " + str(n_pos))
-            print("Ratio: " + str(n_neg / n_pos))
+            print(("Number of negatives: " + str(n_neg)))
+            print(("Number of positive: " + str(n_pos)))
+            print(("Ratio: " + str(n_neg / n_pos)))
 
         if n_pos > n_neg:
             return self
@@ -603,12 +603,12 @@ class Dataset:
             data_pdg = data_pos[data_pos[pdg_lab].abs() == p]
             data_pdgs.append(data_pdg)
             minimum=min(data_pdg.shape[0],minimum)
-            print(" %d pdg : %d " %(p,data_pdg.shape[0]))
+            print((" %d pdg : %d " %(p,data_pdg.shape[0])))
             assert minimum > 0, "%f pdg id has zero entries. Returning." % p
 
-        print(" Others pdg : %d " %(data_excl.shape[0]))
-        print("Minimum = " + str(minimum))
-        print("Minsize = " + str(minimum*maxratio))
+        print((" Others pdg : %d " %(data_excl.shape[0])))
+        print(("Minimum = " + str(minimum)))
+        print(("Minsize = " + str(minimum*maxratio)))
         data_pdgs_sampled = []
 
         for d in data_pdgs:
@@ -616,13 +616,13 @@ class Dataset:
                 d_samp = d.sample(int(minimum*maxratio))
                 data_pdgs_sampled.append(d_samp)
                 totpdg = totpdg + d_samp.shape[0]
-                print(" shape : %d " %(d_samp.shape[0]))
+                print((" shape : %d " %(d_samp.shape[0])))
             else:
                 data_pdgs_sampled.append(d)
-                print(" shape : %d " %(d.shape[0]))
+                print((" shape : %d " %(d.shape[0])))
 
         for d in data_pdgs_sampled:
-            print(" shape samp : %d " %(d.shape[0]))
+            print((" shape samp : %d " %(d.shape[0])))
 
         data_excl = data_excl.sample(frac=1.0)
         if data_excl.shape[0] > totpdg/otheratio:
@@ -648,16 +648,16 @@ class Dataset:
         data_tot = pd.concat(data_pdgs_sampled)
         data_tot = data_tot.sample(frac=1.0)
 
-        print("Old size : " + str(self.data.shape[0]) + " - New size : " + str(data_tot.shape[0]))
+        print(("Old size : " + str(self.data.shape[0]) + " - New size : " + str(data_tot.shape[0])))
 
         print ("New Particle population")
 
         for p in pdgIds:
             data_new_excl  = data_tot[data_tot[pdg_lab].abs() != p]
             data_new_pdg = data_tot[data_tot[pdg_lab].abs() == p]
-            print(" %d pdg : %d " %(p,data_new_pdg.shape[0]))
+            print((" %d pdg : %d " %(p,data_new_pdg.shape[0])))
 
-        print(" Others pdg : %d " %(data_new_excl.shape[0]))
+        print((" Others pdg : %d " %(data_new_excl.shape[0])))
         self.data = data_tot
 
         #print (self.data["inTpPdgId"].value_counts())
@@ -674,13 +674,13 @@ class Dataset:
         print ("Detector population")
         data_barrel_barrel  = data_barrel_In[data_barrel_In["outIsBarrel"] == 1.0]
         minsize = min(minsize,float(data_barrel_barrel.shape[0])*maxratio)
-        print(" - barrel/barrel : " + str(data_barrel_barrel.shape[0]))
+        print((" - barrel/barrel : " + str(data_barrel_barrel.shape[0])))
         data_barrel_edncap  = data_barrel_In[data_barrel_In["outIsBarrel"] == 0.0]
         minsize = min(minsize,float(data_barrel_edncap.shape[0])*maxratio)
-        print(" - barrel/endcap : " + str(data_barrel_edncap.shape[0]))
+        print((" - barrel/endcap : " + str(data_barrel_edncap.shape[0])))
         data_endcap_edncap  = data_endcap_Out[data_endcap_Out["inIsBarrel"] == 0.0]
         minsize = min(minsize,float(data_endcap_edncap.shape[0])*maxratio)
-        print(" - endcap/endcap : " + str(data_endcap_edncap.shape[0]))
+        print((" - endcap/endcap : " + str(data_endcap_edncap.shape[0])))
 
         if data_barrel_barrel.shape[0] > minsize:
             data_barrel_barrel.sample(int(minsize))
@@ -692,7 +692,7 @@ class Dataset:
         data_tot = pd.concat([data_barrel_barrel,data_barrel_edncap,data_endcap_edncap])
         data_tot.sample(frac=1.0)
 
-        print("Old size : " + str(self.data.shape[0]) + " - New size : " + str(data_tot.shape[0]))
+        print(("Old size : " + str(self.data.shape[0]) + " - New size : " + str(data_tot.shape[0])))
 
         self.data = data_tot
         return self
